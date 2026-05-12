@@ -1,7 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
+import { renderVelocityVectors } from "../physics/renderers/velocityRenderer";
 
 import Toolbar from "./Toolbar";
+import PropertiesPanel from "./PropertiesPanel";
+import { setupSelection } from "../physics/selection/selectionManager";
 
 import {
   createPhysicsEngine,
@@ -18,11 +21,17 @@ import {
 
 import { setupMouse } from "../physics/mouse";
 
-const { Composite } = Matter;
+
+
+const { Composite, Events } = Matter;
 
 const PhysicsScene = () => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
+
+  const [selectedBody, setSelectedBody] =
+    useState(null);
+  const [tick, setTick] = useState(0);   
 
   useEffect(() => {
     const { engine, render, runner } =
@@ -53,8 +62,26 @@ const PhysicsScene = () => {
     // Run engine
     runEngine(render, runner, engine);
 
+    const interval = setInterval(() => {
+    setTick((prev) => prev + 1);
+    }, 50);
+
+    setupSelection(
+    render,
+    engine,
+    setSelectedBody
+    );
+
+    Events.on(render, "afterRender", () => {
+  renderVelocityVectors(
+    render,
+    Composite.allBodies(engine.world)
+  );
+});
+
     // Cleanup
     return () => {
+      clearInterval(interval);
       cleanupEngine(render, runner, engine);
     };
   }, []);
@@ -77,16 +104,33 @@ const PhysicsScene = () => {
     Composite.add(engineRef.current.world, circle);
   };
 
-  return (
-    <>
-      <Toolbar
+    return (
+    <div
+        style={{
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        position: "relative",
+        }}
+    >
+        <Toolbar
         addBox={addBox}
         addCircle={addCircle}
-      />
+        />
 
-      <div ref={sceneRef} />
-    </>
-  );
+        <PropertiesPanel
+        selectedBody={selectedBody}
+        />
+
+        <div
+        ref={sceneRef}
+        style={{
+            width: "100%",
+            height: "100%",
+        }}
+        />
+    </div>
+    );
 };
 
 export default PhysicsScene;
