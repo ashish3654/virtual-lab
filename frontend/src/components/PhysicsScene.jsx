@@ -5,6 +5,8 @@ import { renderVelocityVectors } from "../physics/renderers/velocityRenderer";
 import Toolbar from "./Toolbar";
 import PropertiesPanel from "./PropertiesPanel";
 import { setupSelection } from "../physics/selection/selectionManager";
+import { createSpring }
+from "../physics/constraints/spring";
 
 import {
   createPhysicsEngine,
@@ -29,8 +31,8 @@ const PhysicsScene = () => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
 
-  const [selectedBody, setSelectedBody] =
-    useState(null);
+  const [selectedBodies, setSelectedBodies] =
+  useState([]);
   const [tick, setTick] = useState(0);   
 
   useEffect(() => {
@@ -69,11 +71,11 @@ const PhysicsScene = () => {
     setupSelection(
     render,
     engine,
-    setSelectedBody
+    setSelectedBodies
     );
 
     Events.on(render, "afterRender", () => {
-  renderVelocityVectors(
+     renderVelocityVectors(
     render,
     Composite.allBodies(engine.world)
   );
@@ -94,6 +96,57 @@ const PhysicsScene = () => {
 
     Composite.add(engineRef.current.world, box);
   };
+
+  const deleteSelectedBody = () => {
+      if (selectedBodies.length === 0) return;
+
+      const bodyToDelete = selectedBodies[0];
+
+      // Get all constraints
+      const constraints =
+        Composite.allConstraints(
+          engineRef.current.world
+        );
+
+      // Remove connected constraints
+      constraints.forEach((constraint) => {
+        if (
+          constraint.bodyA === bodyToDelete ||
+          constraint.bodyB === bodyToDelete
+        ) {
+          Composite.remove(
+            engineRef.current.world,
+            constraint
+          );
+        }
+      });
+
+      // Remove body
+      Composite.remove(
+        engineRef.current.world,
+        bodyToDelete
+      );
+
+      // Clear selection
+      setSelectedBodies([]);
+    };
+
+
+  const connectSpring = () => {
+  if (selectedBodies.length !== 2) return;
+
+  const spring = createSpring(
+    selectedBodies[0],
+    selectedBodies[1]
+  );
+
+  Composite.add(
+    engineRef.current.world,
+    spring
+  );
+
+  setSelectedBodies([]);
+};
 
   const addCircle = () => {
     const circle = createCircle(
@@ -118,9 +171,11 @@ const PhysicsScene = () => {
         addCircle={addCircle}
         />
 
-        <PropertiesPanel
-        selectedBody={selectedBody}
-        />
+       <PropertiesPanel
+        selectedBodies={selectedBodies}
+        deleteBody={deleteSelectedBody}
+        connectSpring={connectSpring}
+      />
 
         <div
         ref={sceneRef}

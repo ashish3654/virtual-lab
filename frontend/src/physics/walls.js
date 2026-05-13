@@ -18,6 +18,19 @@ export const createWalls = () => {
     }
   );
 
+  const ceiling = Bodies.rectangle(
+    window.innerWidth / 2,
+    wallThickness / 2,
+    window.innerWidth,
+    wallThickness,
+    {
+      isStatic: true,
+      render: {
+        fillStyle: "#374151",
+      },
+    }
+  );
+
   const leftWall = Bodies.rectangle(
     wallThickness / 2,
     window.innerHeight / 2,
@@ -44,5 +57,5 @@ export const createWalls = () => {
     }
   );
 
-  return [floor, leftWall, rightWall];
+  return [floor, leftWall, rightWall, ceiling];
 };
