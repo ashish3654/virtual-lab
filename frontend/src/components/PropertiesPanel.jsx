@@ -4,6 +4,8 @@ const PropertiesPanel = ({
   selectedBodies,
   deleteBody,
   connectSpring,
+  connectRod,
+  connectString,
 }) => {
   if (selectedBodies.length === 0) {
     return null;
@@ -29,6 +31,13 @@ const PropertiesPanel = ({
     Matter.Body.setDensity(
       selectedBody,
       Number(value)
+    );
+  };
+
+  const toggleFixed = () => {
+    Matter.Body.setStatic(
+      selectedBody,
+      !selectedBody.isStatic
     );
   };
 
@@ -144,6 +153,26 @@ const PropertiesPanel = ({
         />
       </div>
 
+      <button
+        onClick={() => {
+          selectedBody.showVelocity =
+            !selectedBody.showVelocity;
+        }}
+        style={{
+          padding: "10px",
+          background: "#2563EB",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          width: "100%",
+        }}
+      >
+        {selectedBody.showVelocity
+          ? "Hide Velocity"
+          : "Show Velocity"}
+      </button>
+
       {/* CONNECT SPRING */}
       {selectedBodies.length === 2 && (
         <button
@@ -161,6 +190,57 @@ const PropertiesPanel = ({
           Connect Spring
         </button>
       )}
+
+      {selectedBodies.length === 2 && (
+        <button
+          onClick={connectRod}
+          style={{
+            padding: "10px",
+            background: "#F59E0B",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            width: "100%",
+          }}
+        >
+          Connect Rod
+        </button>
+      )}
+
+
+      {selectedBodies.length === 2 && (
+        <button
+          onClick={connectString}
+          style={{
+            padding: "10px",
+            background: "#EAB308",
+            color: "black",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            width: "100%",
+          }}
+        >
+          Connect String
+        </button>
+      )}
+      <button
+        onClick={toggleFixed}
+        style={{
+          padding: "10px",
+          background: "#059669",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          width: "100%",
+        }}
+      >
+        {selectedBody.isStatic
+          ? "Unfix Object"
+          : "Fix Object"}
+      </button>
 
       {/* DELETE */}
       <button

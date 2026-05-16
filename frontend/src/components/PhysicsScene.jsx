@@ -8,6 +8,12 @@ import { setupSelection } from "../physics/selection/selectionManager";
 import { createSpring }
 from "../physics/constraints/spring";
 
+import { createRod }
+from "../physics/constraints/rod";
+
+import { createString }
+from "../physics/constraints/string";
+
 import {
   createPhysicsEngine,
   runEngine,
@@ -133,20 +139,49 @@ const PhysicsScene = () => {
 
 
   const connectSpring = () => {
-  if (selectedBodies.length !== 2) return;
+    if (selectedBodies.length !== 2) return;
 
-  const spring = createSpring(
-    selectedBodies[0],
-    selectedBodies[1]
-  );
+    const spring = createSpring(
+      selectedBodies[0],
+      selectedBodies[1]
+    );
 
-  Composite.add(
-    engineRef.current.world,
-    spring
-  );
 
-  setSelectedBodies([]);
-};
+    Composite.add(
+      engineRef.current.world,
+      spring
+    );
+
+    setSelectedBodies([]);
+  };
+
+  const connectRod = () => {
+    if (selectedBodies.length !== 2) return;
+
+    const rod = createRod(
+      selectedBodies[0],
+      selectedBodies[1]
+    );
+
+    Composite.add(
+      engineRef.current.world,
+      rod
+    );
+
+    setSelectedBodies([]);
+  };
+
+  const connectString = () => {
+    if (selectedBodies.length !== 2) return;
+
+    createString(
+      engineRef.current.world,
+      selectedBodies[0],
+      selectedBodies[1]
+    );
+
+    setSelectedBodies([]);
+  };
 
   const addCircle = () => {
     const circle = createCircle(
@@ -175,6 +210,8 @@ const PhysicsScene = () => {
         selectedBodies={selectedBodies}
         deleteBody={deleteSelectedBody}
         connectSpring={connectSpring}
+        connectRod={connectRod}
+        connectString={connectString}
       />
 
         <div

@@ -4,7 +4,11 @@ export const renderVelocityVectors = (render, bodies) => {
   const scale = 10;
 
   bodies.forEach((body) => {
-    if (body.isStatic) return;
+    if (
+      body.isStatic ||
+      !body.showVelocity
+    )
+      return;
 
     const startX = body.position.x;
     const startY = body.position.y;
