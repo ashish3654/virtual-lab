@@ -6,6 +6,15 @@ import {
   toggleVelocityVisibility,
 } from "../../physics/actions/bodyActions";
 
+const toggleStyle = {
+  width: "50px",
+  height: "26px",
+  borderRadius: "999px",
+  position: "relative",
+  cursor: "pointer",
+  transition: "0.3s",
+};
+
 const PhysicsControls = ({
   selectedBody,
 }) => {
@@ -82,45 +91,91 @@ const PhysicsControls = ({
         />
       </div>
 
-      <button
-        onClick={() =>
-          toggleVelocityVisibility(
-            selectedBody
-          )
-        }
+      <div
         style={{
-          padding: "10px",
-          background: "#2563EB",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
         }}
-      >
-        {selectedBody.showVelocity
-          ? "Hide Velocity"
-          : "Show Velocity"}
-      </button>
+        >
+        <span>Show Velocity</span>
 
-      <button
-        onClick={() =>
-          toggleFixed(selectedBody)
-        }
+        <div
+            onClick={() =>
+            toggleVelocityVisibility(
+                selectedBody
+            )
+            }
+            style={{
+            ...toggleStyle,
+
+            background:
+                selectedBody.showVelocity
+                ? "#38BDF8"
+                : "#9CA3AF",
+            }}
+        >
+            <div
+            style={{
+                width: "22px",
+                height: "22px",
+                borderRadius: "50%",
+                background: "white",
+                position: "absolute",
+                top: "2px",
+
+                left:
+                selectedBody.showVelocity
+                    ? "26px"
+                    : "2px",
+
+                transition: "0.3s",
+            }}
+            />
+        </div>
+        </div>
+
+      <div
         style={{
-          padding: "10px",
-          background: "#059669",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
         }}
-      >
-        {selectedBody.isStatic
-          ? "Unfix Object"
-          : "Fix Object"}
-      </button>
+        >
+        <span>Fixed Object</span>
+
+        <div
+            onClick={() =>
+            toggleFixed(selectedBody)
+            }
+            style={{
+            ...toggleStyle,
+
+            background:
+                selectedBody.isStatic
+                ? "#38BDF8"
+                : "#9CA3AF",
+            }}
+        >
+            <div
+            style={{
+                width: "22px",
+                height: "22px",
+                borderRadius: "50%",
+                background: "white",
+                position: "absolute",
+                top: "2px",
+
+                left:
+                selectedBody.isStatic
+                    ? "26px"
+                    : "2px",
+
+                transition: "0.3s",
+            }}
+            />
+        </div>
+        </div>
     </>
   );
 };

@@ -32,10 +32,8 @@ import {
 import { deleteBodyAction }
 from "../../physics/actions/deletionActions";
 
-import {
-  addBoxAction,
-  addCircleAction,
-} from "../../physics/actions/spawnActions";
+import { setupSpawnTool }
+from "../../physics/tools/spawnTool";
 
 import { initializeWorld }
 from "../../physics/setup/initializeWorld";
@@ -92,6 +90,11 @@ const PhysicsScene = () => {
       setSelectedBodies
     );
 
+    setupSpawnTool(
+      render,
+      engine
+    );
+
     // Rendering systems
     Events.on(
       render,
@@ -118,19 +121,7 @@ const PhysicsScene = () => {
     };
   }, []);
 
-  // SPAWN ACTIONS
 
-  const addBox = () => {
-    addBoxAction(
-      engineRef.current.world
-    );
-  };
-
-  const addCircle = () => {
-    addCircleAction(
-      engineRef.current.world
-    );
-  };
 
   // DELETE ACTION
 
@@ -177,10 +168,7 @@ const PhysicsScene = () => {
         position: "relative",
       }}
     >
-      <Toolbar
-        addBox={addBox}
-        addCircle={addCircle}
-      />
+      <Toolbar />
 
       <PropertiesPanel
         selectedBodies={
