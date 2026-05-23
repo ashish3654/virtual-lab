@@ -1,3 +1,8 @@
+import { useState } from "react";
+
+import { applyForceAction }
+from "../../physics/actions/forceActions";
+
 import {
   updateRestitution,
   updateFriction,
@@ -18,6 +23,9 @@ const toggleStyle = {
 const PhysicsControls = ({
   selectedBody,
 }) => {
+  const [fx, setFx] = useState(0);
+  const [fy, setFy] = useState(0);
+
   return (
     <>
       {/* RESTITUTION */}
@@ -90,6 +98,58 @@ const PhysicsControls = ({
           style={{ width: "100%" }}
         />
       </div>
+      <div>
+        <label>Force X</label>
+
+        <input
+          type="number"
+          value={fx}
+          onChange={(e) =>
+            setFx(e.target.value)
+          }
+          style={{
+            width: "100%",
+            padding: "8px",
+          }}
+        />
+      </div>
+
+      <div>
+        <label>Force Y</label>
+
+        <input
+          type="number"
+          value={fy}
+          onChange={(e) =>
+            setFy(e.target.value)
+          }
+          style={{
+            width: "100%",
+            padding: "8px",
+          }}
+        />
+      </div>
+
+      <button
+        onClick={() =>
+          applyForceAction(
+            selectedBody,
+            fx,
+            fy
+          )
+        }
+        style={{
+          padding: "10px",
+          background: "#DC2626",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          width: "100%",
+        }}
+      >
+        Apply Force
+      </button>
 
       <div
         style={{
