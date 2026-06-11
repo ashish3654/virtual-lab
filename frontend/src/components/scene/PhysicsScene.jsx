@@ -38,6 +38,13 @@ from "../../physics/tools/spawnTool";
 import { initializeWorld }
 from "../../physics/setup/initializeWorld";
 
+import GraphPanel
+from "../../graphs/GraphPanel";
+
+import {
+  recordGraphPoint,
+} from "../../graphs/dataRecorder";
+
 const { Composite, Events } = Matter;
 
 const PhysicsScene = () => {
@@ -53,6 +60,9 @@ const PhysicsScene = () => {
   // Force React refresh
   const [tick, setTick] =
     useState(0);
+
+  const [showGraph, setShowGraph] =
+    useState(false);
 
   useEffect(() => {
     const {
@@ -73,9 +83,25 @@ const PhysicsScene = () => {
 
     // Run engine
     runEngine(
-      render,
-      runner,
-      engine
+          render,
+          runner,
+          engine
+        );
+
+        const startTime =
+      Date.now();
+
+    Matter.Events.on(
+      engine,
+      "afterUpdate",
+      () => {
+        recordGraphPoint(
+          (
+            Date.now() -
+            startTime
+          ) / 1000
+        );
+      }
     );
 
     // Force React updates
@@ -171,6 +197,10 @@ const PhysicsScene = () => {
       <Toolbar />
 
       <PropertiesPanel
+
+        showGraph={showGraph}
+        setShowGraph={setShowGraph}
+        
         selectedBodies={
           selectedBodies
         }
@@ -183,6 +213,13 @@ const PhysicsScene = () => {
           connectString
         }
       />
+      {showGraph && (
+        <GraphPanel
+          setShowGraph={
+            setShowGraph
+          }
+        />
+      )}
 
       <div
         ref={sceneRef}

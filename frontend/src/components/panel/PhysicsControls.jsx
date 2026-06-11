@@ -11,6 +11,16 @@ import {
   toggleVelocityVisibility,
 } from "../../physics/actions/bodyActions";
 
+import {
+  setGraphBody,
+} from "../../graphs/graphManager";
+
+import {
+  startRecording,
+  stopRecording,
+  getRecordingState,
+} from "../../graphs/dataRecorder";
+
 const toggleStyle = {
   width: "50px",
   height: "26px",
@@ -22,6 +32,8 @@ const toggleStyle = {
 
 const PhysicsControls = ({
   selectedBody,
+  showGraph,
+  setShowGraph,
 }) => {
   const [fx, setFx] = useState(0);
   const [fy, setFy] = useState(0);
@@ -149,6 +161,50 @@ const PhysicsControls = ({
         }}
       >
         Apply Force
+      </button>
+
+      <button
+        onClick={() => {
+          setGraphBody(
+            selectedBody
+          );
+
+          startRecording();
+        }}
+        style={{
+          padding: "10px",
+          width: "100%",
+        }}
+      >
+        Start Velocity Graph
+      </button>
+
+      <button
+        onClick={() =>
+          stopRecording()
+        }
+        style={{
+          padding: "10px",
+          width: "100%",
+        }}
+      >
+        Stop Recording
+      </button>
+
+      <button
+        onClick={() =>
+          setShowGraph(
+            (prev) => !prev
+          )
+        }
+        style={{
+          padding: "10px",
+          width: "100%",
+        }}
+      >
+        {showGraph
+          ? "Hide Graph"
+          : "Show Graph"}
       </button>
 
       <div

@@ -8,6 +8,8 @@ const PropertiesPanel = ({
   connectSpring,
   connectRod,
   connectString,
+  showGraph,
+  setShowGraph,
 }) => {
   if (selectedBodies.length === 0) {
     return null;
@@ -43,6 +45,8 @@ const PropertiesPanel = ({
 
       <PhysicsControls
         selectedBody={selectedBody}
+        showGraph={showGraph}
+        setShowGraph={setShowGraph}
       />
 
       <ConstraintControls
