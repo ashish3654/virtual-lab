@@ -30,44 +30,19 @@ const VelocityGraph = ({
     ),
 
     datasets: [
-      {
-        label: "Vx",
+        {
+            label: "Kinetic Energy",
 
-        data: data.map(
-          (point) => point.vx
-        ),
+            data: data.map(
+            (point) =>
+                point.kineticEnergy
+            ),
 
-        borderColor:
-          "rgb(255,99,132)",
+            borderColor:
+            "rgb(255,99,132)",
 
-        tension: 0.2,
-      },
-
-      {
-        label: "Vy",
-
-        data: data.map(
-          (point) => point.vy
-        ),
-
-        borderColor:
-          "rgb(54,162,235)",
-
-        tension: 0.2,
-      },
-
-      {
-        label: "Speed",
-
-        data: data.map(
-          (point) => point.speed
-        ),
-
-        borderColor:
-          "rgb(75,192,192)",
-
-        tension: 0.2,
-      },
+            tension: 0.2,
+        },
     ],
   };
 
@@ -83,7 +58,7 @@ const VelocityGraph = ({
 
       title: {
         display: true,
-        text: "Velocity vs Time (Simulation Units) ",
+        text: "Kinetic Energy vs Time (Simulation Units) ",
       },
     },
   };

@@ -10,6 +10,8 @@ let startTime = 0;
 
 let isRecording = false;
 
+let previousVelocity = null;
+
 export const recordGraphPoint = (
   elapsedTime
 ) => {
@@ -23,6 +25,11 @@ export const recordGraphPoint = (
     return;
   }
 
+  const time =
+    (performance.now() -
+      startTime) /
+    1000;
+
   const vx = body.velocity.x;
 
   const vy = -body.velocity.y;
@@ -31,14 +38,57 @@ export const recordGraphPoint = (
     vx * vx + vy * vy
   );
 
+  const kineticEnergy =
+    0.5 *
+    body.mass *
+    speed *
+    speed;
+
+  let forceX = 0;
+
+  let forceY = 0;
+
+  let forceMagnitude = 0;
+
+  if (previousVelocity !== null) {
+    const dt =
+      time -
+      previousVelocity.time;
+
+    if (dt > 0) {
+      const ax =
+        (vx -
+          previousVelocity.vx) /
+        dt;
+
+      const ay =
+        (vy -
+          previousVelocity.vy) /
+        dt;
+
+      forceX =
+        body.mass * ax;
+
+      forceY =
+        body.mass * ay;
+
+      forceMagnitude =
+        Math.sqrt(
+          forceX * forceX +
+            forceY * forceY
+        );
+    }
+  }
+
+  previousVelocity = {
+    vx,
+    vy,
+    time,
+  };
+
   if (speed < 0.05) {
     return;
   }
-
-  const time =
-    (performance.now() -
-      startTime) /
-    1000;
 
   if (
     time - lastRecordTime <
@@ -57,10 +107,19 @@ export const recordGraphPoint = (
     vy,
 
     speed,
+
+    kineticEnergy,
+
+    forceX,
+
+    forceY,
+
+    forceMagnitude,
   });
 
   if (
-    graphData.length > MAX_POINTS
+    graphData.length >
+    MAX_POINTS
   ) {
     graphData.shift();
   }
@@ -80,6 +139,8 @@ export const startRecording = () => {
   startTime = performance.now();
 
   lastRecordTime = 0;
+
+  previousVelocity = null;
 
   isRecording = true;
 };

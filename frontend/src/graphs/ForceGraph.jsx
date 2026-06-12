@@ -30,45 +30,48 @@ const VelocityGraph = ({
     ),
 
     datasets: [
-      {
-        label: "Vx",
+        {
+            label: "Fx",
 
-        data: data.map(
-          (point) => point.vx
-        ),
+            data: data.map(
+            (point) =>
+                point.forceX
+            ),
 
-        borderColor:
-          "rgb(255,99,132)",
+            borderColor:
+            "rgb(255,99,132)",
 
-        tension: 0.2,
-      },
+            tension: 0.2,
+        },
 
-      {
-        label: "Vy",
+        {
+            label: "Fy",
 
-        data: data.map(
-          (point) => point.vy
-        ),
+            data: data.map(
+            (point) =>
+                point.forceY
+            ),
 
-        borderColor:
-          "rgb(54,162,235)",
+            borderColor:
+            "rgb(54,162,235)",
 
-        tension: 0.2,
-      },
+            tension: 0.2,
+        },
 
-      {
-        label: "Speed",
+        {
+            label: "|F|",
 
-        data: data.map(
-          (point) => point.speed
-        ),
+            data: data.map(
+            (point) =>
+                point.forceMagnitude
+            ),
 
-        borderColor:
-          "rgb(75,192,192)",
+            borderColor:
+            "rgb(75,192,192)",
 
-        tension: 0.2,
-      },
-    ],
+            tension: 0.2,
+        },
+        ],
   };
 
   const options = {
@@ -83,7 +86,7 @@ const VelocityGraph = ({
 
       title: {
         display: true,
-        text: "Velocity vs Time (Simulation Units) ",
+        text: "Force vs Time (simulation Units) ",
       },
     },
   };

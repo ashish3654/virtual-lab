@@ -6,6 +6,12 @@ import {
 import VelocityGraph
 from "./VelocityGraph";
 
+import KineticEnergyGraph
+  from "./KineticEnergyGraph";
+
+import ForceGraph
+  from "./ForceGraph";
+
 import {
   getGraphData,
 } from "./dataRecorder";
@@ -15,6 +21,10 @@ const GraphPanel = ({
 }) => {
   const [data, setData] =
     useState([]);
+
+  const [
+    selectedGraph,setSelectedGraph,] = 
+    useState( "velocity");
 
   useEffect(() => {
     const interval =
@@ -80,9 +90,54 @@ const GraphPanel = ({
         ×
       </button>
 
-      <VelocityGraph
-        data={data}
-      />
+      <select
+        value={selectedGraph}
+        onChange={(e) =>
+          setSelectedGraph(
+            e.target.value
+          )
+        }
+
+        style={{
+          marginBottom:
+            "10px",
+
+          padding: "5px",
+        }}
+      >
+        <option value="velocity">
+          Velocity
+        </option>
+
+        <option value="kinetic">
+          Kinetic Energy
+        </option>
+
+        <option value="force">
+          Force
+        </option>
+      </select>
+
+      {selectedGraph ===
+        "velocity" && (
+        <VelocityGraph
+          data={data}
+        />
+      )}
+
+      {selectedGraph ===
+        "kinetic" && (
+        <KineticEnergyGraph
+          data={data}
+        />
+      )}
+
+      {selectedGraph ===
+        "force" && (
+        <ForceGraph
+          data={data}
+        />
+      )}
     </div>
   );
 };

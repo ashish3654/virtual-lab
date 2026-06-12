@@ -165,30 +165,30 @@ const PhysicsControls = ({
 
       <button
         onClick={() => {
-          setGraphBody(
-            selectedBody
-          );
+          if (
+            getRecordingState()
+          ) {
+            stopRecording();
+          } else {
+            setGraphBody(
+              selectedBody
+            );
 
-          startRecording();
+            startRecording();
+          }
         }}
+
+        disabled={!selectedBody}
+
         style={{
           padding: "10px",
+
           width: "100%",
         }}
       >
-        Start Velocity Graph
-      </button>
-
-      <button
-        onClick={() =>
-          stopRecording()
-        }
-        style={{
-          padding: "10px",
-          width: "100%",
-        }}
-      >
-        Stop Recording
+        {getRecordingState()
+          ? "■ Stop Graph Recording"
+          : "▶ Start Graph Recordingg"}
       </button>
 
       <button
