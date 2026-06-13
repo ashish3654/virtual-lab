@@ -4,6 +4,9 @@ import {
   useState,
 } from "react";
 
+import { registerSpawnSynchronization }
+from "../../physics/synchronization/spawnSynchronization";
+
 import RoomControls from "../panel/RoomControls";
 
 import Matter from "matter-js";
@@ -122,6 +125,12 @@ const PhysicsScene = () => {
       render,
       engine
     );
+
+    registerSpawnSynchronization(
+      engine
+    );
+
+    
 
     // Rendering systems
     Events.on(
