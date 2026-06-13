@@ -9,3 +9,10 @@ export function emitDeleteObject(id) {
         id,
     });
 }
+
+export function emitCreateConstraint(data) {
+    socket.emit(
+        "create-constraint",
+        data
+    );
+}

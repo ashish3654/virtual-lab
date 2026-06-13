@@ -1,5 +1,11 @@
 import Matter from "matter-js";
 
+import { emitCreateConstraint }
+from "../../services/socketActions";
+
+import { getNetworkId }
+from "../utils/networkId";
+
 import { createSpring }
 from "../constraints/spring";
 
@@ -9,12 +15,14 @@ from "../constraints/rod";
 import { createString }
 from "../constraints/string";
 
+
 const { Composite } = Matter;
 
 export const connectSpringAction = (
   world,
   selectedBodies,
-  clearSelection
+  clearSelection,
+  emitConstraint = true
 ) => {
   if (selectedBodies.length !== 2) {
     return;
@@ -25,6 +33,18 @@ export const connectSpringAction = (
     selectedBodies[1]
   );
 
+  if (emitConstraint) {
+    emitCreateConstraint({
+      type: "spring",
+      bodyAId: getNetworkId(
+        selectedBodies[0]
+      ),
+      bodyBId: getNetworkId(
+        selectedBodies[1]
+      ),
+    });
+  }
+
   Composite.add(world, spring);
 
   clearSelection([]);
@@ -33,16 +53,29 @@ export const connectSpringAction = (
 export const connectRodAction = (
   world,
   selectedBodies,
-  clearSelection
+  clearSelection,
+  emitConstraint = true
 ) => {
   if (selectedBodies.length !== 2) {
     return;
   }
 
-  const rod = createRod(
+ const rod = createRod(
     selectedBodies[0],
     selectedBodies[1]
   );
+
+ if (emitConstraint) {
+    emitCreateConstraint({
+      type: "rod",
+      bodyAId: getNetworkId(
+        selectedBodies[0]
+      ),
+      bodyBId: getNetworkId(
+        selectedBodies[1]
+      ),
+    });
+  }
 
   Composite.add(world, rod);
 
@@ -52,10 +85,23 @@ export const connectRodAction = (
 export const connectStringAction = (
   world,
   selectedBodies,
-  clearSelection
+  clearSelection,
+  emitConstraint = true
 ) => {
   if (selectedBodies.length !== 2) {
     return;
+  }
+
+  if (emitConstraint) {
+    emitCreateConstraint({
+      type: "string",
+      bodyAId: getNetworkId(
+        selectedBodies[0]
+      ),
+      bodyBId: getNetworkId(
+        selectedBodies[1]
+      ),
+    });
   }
 
   createString(

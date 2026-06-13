@@ -4,6 +4,9 @@ import {
   useState,
 } from "react";
 
+import { registerConstraintSynchronization }
+from "../../physics/synchronization/constraintSynchronization";
+
 import { registerSpawnSynchronization }
 from "../../physics/synchronization/spawnSynchronization";
 
@@ -134,6 +137,10 @@ const PhysicsScene = () => {
     );
 
     registerDeleteSynchronization(
+      engine
+    );
+
+    registerConstraintSynchronization(
       engine
     );
 
