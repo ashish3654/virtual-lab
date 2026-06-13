@@ -1,12 +1,16 @@
 import Matter from "matter-js";
-import { assignNetworkId } from "../utils/networkId";
+import {
+  assignNetworkId,
+  setNetworkId,
+} from "../utils/networkId";
 
 const { Bodies } = Matter;
 
 export const createAnchor = (
   x,
-  y
-) => {
+  y,
+  networkId = null
+)  => {
   const body =  Bodies.circle(x, y, 10, {
     isStatic: true,
 
@@ -17,7 +21,11 @@ export const createAnchor = (
     },
   });
 
-  assignNetworkId(body);
+  if (networkId) {
+    setNetworkId(body, networkId);
+  } else {
+    assignNetworkId(body);
+  }
 
   return body;
 };

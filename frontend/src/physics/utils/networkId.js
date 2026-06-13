@@ -10,3 +10,8 @@ export function assignNetworkId(body) {
 export function getNetworkId(body) {
     return body.plugin?.networkId;
 }
+
+export function setNetworkId(body, id) {
+    body.plugin = body.plugin || {};
+    body.plugin.networkId = id;
+}

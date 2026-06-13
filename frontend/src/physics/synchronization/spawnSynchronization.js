@@ -25,8 +25,9 @@ export function registerSpawnSynchronization(engine) {
 
       if (data.type === "box") {
         body = createBox(
-          data.x,
-          data.y
+         data.x,
+         data.y,
+         data.id
         );
       }
 
@@ -35,7 +36,8 @@ export function registerSpawnSynchronization(engine) {
       ) {
         body = createCircle(
           data.x,
-          data.y
+          data.y,
+          data.id
         );
       }
 
@@ -44,7 +46,8 @@ export function registerSpawnSynchronization(engine) {
       ) {
         body = createAnchor(
           data.x,
-          data.y
+          data.y,
+          data.id
         );
       }
 

@@ -27,4 +27,5 @@ export const addCircleAction = (
   );
 
   Composite.add(world, circle);
+
 };
