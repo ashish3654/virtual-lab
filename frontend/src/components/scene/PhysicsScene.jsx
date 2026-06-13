@@ -4,6 +4,8 @@ import {
   useState,
 } from "react";
 
+import RoomControls from "../panel/RoomControls";
+
 import Matter from "matter-js";
 
 import Toolbar from "../toolbar/Toolbar";
@@ -196,6 +198,8 @@ const PhysicsScene = () => {
     >
       <Toolbar />
 
+      <RoomControls />
+
       <PropertiesPanel
 
         showGraph={showGraph}
@@ -213,6 +217,7 @@ const PhysicsScene = () => {
           connectString
         }
       />
+
       {showGraph && (
         <GraphPanel
           setShowGraph={

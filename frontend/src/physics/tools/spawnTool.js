@@ -1,5 +1,11 @@
 import Matter from "matter-js";
 
+import { emitSpawnObject }
+from "../../services/socketActions";
+
+import { getNetworkId }
+from "../utils/networkId";
+
 import {
   createBox,
   createCircle,
@@ -58,6 +64,13 @@ export const setupSpawnTool = (
         engine.world,
         body
       );
+
+      emitSpawnObject({
+        id: getNetworkId(body),
+        type: tool,
+        x,
+        y,
+      });
     }
   );
 };

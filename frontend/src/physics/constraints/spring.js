@@ -14,7 +14,7 @@ export const createSpring = (
     length: 200,
 
     // Spring strength
-    stiffness: 0.02,
+    stiffness: 0.01,
 
     // Visual appearance
     render: {
