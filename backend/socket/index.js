@@ -1,5 +1,6 @@
 const registerRoomHandlers = require("./roomHandlers");
 const registerSpawnHandlers = require("./spawnHandlers");
+const registerDeleteHandlers = require("./deleteHandlers");
 
 function initializeSocket(io) {
     io.on("connection", (socket) => {
@@ -7,7 +8,12 @@ function initializeSocket(io) {
 
         registerRoomHandlers(socket);
         registerSpawnHandlers(io, socket);
+        registerDeleteHandlers(
+            io,
+            socket
+        );
 
+        
         socket.on("disconnect", () => {
             console.log("User disconnected:", socket.id);
         });

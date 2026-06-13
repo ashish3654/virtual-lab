@@ -7,6 +7,9 @@ import {
 import { registerSpawnSynchronization }
 from "../../physics/synchronization/spawnSynchronization";
 
+import { registerDeleteSynchronization }
+from "../../physics/synchronization/deleteSynchronization";
+
 import RoomControls from "../panel/RoomControls";
 
 import Matter from "matter-js";
@@ -127,6 +130,10 @@ const PhysicsScene = () => {
     );
 
     registerSpawnSynchronization(
+      engine
+    );
+
+    registerDeleteSynchronization(
       engine
     );
 

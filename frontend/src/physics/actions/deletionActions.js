@@ -1,11 +1,18 @@
 import Matter from "matter-js";
 
+import { emitDeleteObject }
+from "../../services/socketActions";
+
+import { getNetworkId }
+from "../utils/networkId";
+
 const { Composite } = Matter;
 
 export const deleteBodyAction = (
   world,
   selectedBodies,
-  clearSelection
+  clearSelection,
+  emitDelete = true
 ) => {
   if (selectedBodies.length === 0) {
     return;
@@ -13,6 +20,14 @@ export const deleteBodyAction = (
 
   const bodyToDelete =
     selectedBodies[0];
+
+  // Emit delete event for
+  // locally initiated deletions
+  if (emitDelete) {
+    emitDeleteObject(
+      getNetworkId(bodyToDelete)
+    );
+  }
 
   // Remove connected constraints
   const constraints =

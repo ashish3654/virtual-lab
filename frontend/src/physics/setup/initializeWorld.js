@@ -43,9 +43,6 @@ export const initializeWorld = (
   // Add everything
   Composite.add(engine.world, [
     ...walls,
-    box1,
-    box2,
-    circle,
     mouseConstraint,
   ]);
 };
