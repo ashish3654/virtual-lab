@@ -3,6 +3,8 @@ const registerSpawnHandlers = require("./spawnHandlers");
 const registerDeleteHandlers = require("./deleteHandlers");
 const registerConstraintHandlers =require( "./constraintHandlers");
 const registerDragHandlers = require("./dragHandlers");
+const registerForceHandlers = require("./forceHandlers");
+const registerSaveHandlers = require("./saveHandlers");
 
 function initializeSocket(io) {
     io.on("connection", (socket) => {
@@ -25,7 +27,14 @@ function initializeSocket(io) {
             io,
             socket
         );
-
+        registerForceHandlers(
+            io,
+            socket
+        );
+        registerSaveHandlers(
+            io,
+            socket
+        );
 
         socket.on("disconnect", () => {
             console.log("User disconnected:", socket.id);

@@ -4,6 +4,9 @@ import {
   useState,
 } from "react";
 
+import { registerForceSynchronization,} 
+from "../../physics/synchronization/forceSynchronization";
+
 import { registerDragReceiver}
 from "../../physics/synchronization/dragReceiver";
 
@@ -164,6 +167,10 @@ const PhysicsScene = () => {
     );
 
     registerDragReceiver(
+      engine
+    );
+
+    registerForceSynchronization(
       engine
     );
 

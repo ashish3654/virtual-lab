@@ -1,120 +1,153 @@
-# Virtual Lab
+# Virtual Physics Lab
 
-A collaborative real-time 2D physics sandbox built for interactive engineering and physics experimentation.
+A collaborative virtual physics laboratory built using **React**, **Matter.js**, **Node.js**, and **Socket.IO**. The application allows multiple users to create, manipulate, and analyze physics experiments together in real time.
 
 ## Features
-- Real-time collaborative workspace
-- Physics simulation using Matter.js
-- Drag-and-drop mechanical components
-- Live synchronization with Socket.io
-- Analytics dashboard for force and motion visualization
 
-## Tech Stack
-- React
-- Node.js
-- Express
-- Socket.io
-- Matter.js
-- MongoDB
+### Physics Simulation
+
+* Create boxes and circles.
+* Create fixed anchors.
+* Connect bodies using:
+
+  * Springs
+  * Rods
+  * Strings
+* Real-time physics simulation using Matter.js.
+* Velocity vector visualization.
+* Object property inspection and editing.
+* Graph recording and visualization.
+
+### Collaboration Features
+
+* Create and join shared rooms.
+* Multi-user experiment building.
+* Real-time synchronization of:
+
+  * Object creation
+  * Object deletion
+  * Constraint creation
+* Real-time drag synchronization between users.
+* Shared object identities using network IDs.
+* Room-based event broadcasting.
+
+### Late Join Support
+
+Users joining an existing room automatically receive the current experiment state, including:
+
+* Existing objects
+* Existing constraints
+
+This allows participants to join ongoing experiments without losing context.
+
+## Technologies Used
+
+### Frontend
+
+* React
+* Matter.js
+* Socket.IO Client
+* Vite
+
+### Backend
+
+* Node.js
+* Express
+* Socket.IO
 
 ## Project Structure
 
-```text
-virtual-lab/
-├── frontend/
-│   ├── public/
-│   │   ├── favicon.svg
-│   │   └── icons.svg
-│   │
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── panel/
-│   │   │   │   ├── ConstraintControls.jsx
-│   │   │   │   ├── ObjectStats.jsx
-│   │   │   │   ├── PhysicsControls.jsx
-│   │   │   │   └── PropertiesPanel.jsx
-│   │   │   │
-│   │   │   ├── scene/
-│   │   │   │   └── PhysicsScene.jsx
-│   │   │   │
-│   │   │   └── toolbar/
-│   │   │       └── Toolbar.jsx
-│   │   │
-│   │   ├── graphs/
-│   │   │   ├── ForceGraph.jsx
-│   │   │   ├── GraphPanel.jsx
-│   │   │   ├── KineticEnergyGraph.jsx
-│   │   │   ├── VelocityGraph.jsx
-│   │   │   ├── dataRecorder.js
-│   │   │   └── graphManager.js
-│   │   │
-│   │   ├── physics/
-│   │   │   ├── actions/
-│   │   │   │   ├── bodyActions.js
-│   │   │   │   ├── constraintActions.js
-│   │   │   │   ├── deletionActions.js
-│   │   │   │   ├── forceActions.js
-│   │   │   │   └── spawnActions.js
-│   │   │   │
-│   │   │   ├── constraints/
-│   │   │   │   ├── rod.js
-│   │   │   │   ├── spring.js
-│   │   │   │   └── string.js
-│   │   │   │
-│   │   │   ├── engine/
-│   │   │   │   ├── engine.js
-│   │   │   │   └── mouse.js
-│   │   │   │
-│   │   │   ├── objects/
-│   │   │   │   ├── anchorFactory.js
-│   │   │   │   ├── objectFactory.js
-│   │   │   │   └── walls.js
-│   │   │   │
-│   │   │   ├── renderers/
-│   │   │   │   └── velocityRenderer.js
-│   │   │   │
-│   │   │   ├── selection/
-│   │   │   │   └── selectionManager.js
-│   │   │   │
-│   │   │   ├── setup/
-│   │   │   │   └── initializeWorld.js
-│   │   │   │
-│   │   │   └── tools/
-│   │   │       ├── spawnTool.js
-│   │   │       └── toolManager.js
-│   │   │
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   │
-│   ├── package.json
-│   └── vite.config.js
-│
-├── backend/
-│   ├── package.json
-│   └── package-lock.json
-│
-├── Readme.md
-└── .gitignore
+### Frontend
+
+```
+frontend/
+├── components/
+├── physics/
+│   ├── actions/
+│   ├── constraints/
+│   ├── engine/
+│   ├── objects/
+│   ├── selection/
+│   ├── setup/
+│   ├── synchronization/
+│   └── tools/
+├── services/
+└── graphs/
 ```
 
-## Implemented Features
+### Backend
 
-- [x] Interactive 2D physics sandbox
-- [x] Object spawning and manipulation
-- [x] Spring constraints
-- [x] Rod constraints
-- [x] String/Rope constraints
-- [x] Velocity visualization
-- [x] Force graphs
-- [x] Kinetic energy graphs
-- [x] Physics control panel
-- [x] Object property editor
+```
+backend/
+├── socket/
+│   ├── roomHandlers.js
+│   ├── spawnHandlers.js
+│   ├── deleteHandlers.js
+│   ├── constraintHandlers.js
+│   ├── dragHandlers.js
+│   └── roomState.js
+├── server.js
+└── package.json
+```
 
-## Upcoming Features
+## Installation
 
-- [ ] Multi-user collaboration
-- [ ] Socket.io synchronization
-- [ ] Experiment save/load
-- [ ] MongoDB integration
-- [ ] Experiment library
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+The backend runs on:
+
+```
+http://localhost:5000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs on:
+
+```
+http://localhost:5173
+```
+
+## Usage
+
+1. Start both frontend and backend servers.
+2. Create or join a room.
+3. Add objects using the toolbar.
+4. Connect objects using springs, rods, or strings.
+5. Drag objects to collaboratively manipulate the experiment.
+6. Share the room ID with other users.
+
+## Synchronization Architecture
+
+The application follows a **frontend-driven simulation architecture**:
+
+* Matter.js simulations run independently on each client.
+* Socket.IO is used to synchronize user actions.
+* The backend maintains room state for:
+
+  * Objects
+  * Constraints
+* Late joiners reconstruct experiments using backend snapshots.
+
+## Future Improvements
+
+* Save and load experiments.
+* Constraint deletion synchronization.
+* Ownership-based synchronization.
+* Export experiment configurations.
+* Persistent storage for room states.
+
+```
+```

@@ -21,9 +21,6 @@ Events.on(
   mouseConstraint,
   "startdrag",
   (event) => {
-    console.log(
-      "Drag started"
-    );
 
     draggedBody =
       event.body;
@@ -63,9 +60,6 @@ Events.on(
   mouseConstraint,
   "enddrag",
   () => {
-    console.log(
-      "Drag ended"
-    );
 
     draggedBody =
       null;
