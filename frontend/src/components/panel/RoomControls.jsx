@@ -14,6 +14,9 @@ import {
     saveToDatabase,
     registerDatabaseSaveSuccess,
     registerDatabaseSaveFailure,
+    requestExperiments,
+    registerExperimentsHandler,
+    loadFromDatabase,
 } from "../../services/saveSocket";
 
 import {
@@ -36,6 +39,11 @@ function RoomControls() {
         experimentName,
         setExperimentName,
     ] = useState("");
+
+    const [
+        experiments,
+        setExperiments,
+    ] = useState([]);
 
     const showMessage =
         (text) => {
@@ -124,6 +132,15 @@ function RoomControls() {
                     );
                 }
             );
+            registerExperimentsHandler(
+                (data) => {
+
+                    setExperiments(
+                        data
+                    );
+
+                }
+            );
 
         },
         [experimentName]
@@ -177,262 +194,381 @@ function RoomControls() {
             );
         };
 
-    return (
+return (
+    <div
+        style={{
+            padding:
+                "12px 20px",
+
+            background:
+                "#1F2937",
+
+            borderBottom:
+                "1px solid #374151",
+        }}
+    >
         <div
             style={{
-                padding:
-                    "12px 20px",
+                display:
+                    "flex",
 
-                background:
-                    "#1F2937",
+                alignItems:
+                    "center",
 
-                borderBottom:
-                    "1px solid #374151",
+                gap:
+                    "12px",
+
+                flexWrap:
+                    "wrap",
             }}
         >
             <div
                 style={{
-                    display:
-                        "flex",
+                    color:
+                        "white",
 
-                    alignItems:
-                        "center",
+                    fontWeight:
+                        "bold",
 
-                    gap:
+                    fontSize:
+                        "18px",
+
+                    marginRight:
                         "12px",
-
-                    flexWrap:
-                        "wrap",
                 }}
             >
-                <div
-                    style={{
-                        color:
-                            "white",
-
-                        fontWeight:
-                            "bold",
-
-                        fontSize:
-                            "18px",
-
-                        marginRight:
-                            "12px",
-                    }}
-                >
-                    Virtual Physics Lab
-                </div>
-
-                <input
-                    type="text"
-                    placeholder="Enter Room ID"
-                    value={roomId}
-                    onChange={
-                        (e) =>
-                            setRoomId(
-                                e.target
-                                    .value
-                            )
-                    }
-                    style={{
-                        padding:
-                            "10px 14px",
-
-                        borderRadius:
-                            "8px",
-
-                        border:
-                            "1px solid #4B5563",
-
-                        background:
-                            "#111827",
-
-                        color:
-                            "white",
-
-                        outline:
-                            "none",
-
-                        minWidth:
-                            "220px",
-                    }}
-                />
-
-                <button
-                    onClick={
-                        handleCreateRoom
-                    }
-                    disabled={
-                        !roomId.trim()
-                    }
-                    style={{
-                        padding:
-                            "10px 16px",
-
-                        background:
-                            "#2563EB",
-
-                        color:
-                            "white",
-
-                        border:
-                            "none",
-
-                        borderRadius:
-                            "8px",
-
-                        cursor:
-                            roomId.trim()
-                                ? "pointer"
-                                : "not-allowed",
-
-                        opacity:
-                            roomId.trim()
-                                ? 1
-                                : 0.5,
-                    }}
-                >
-                    Create Room
-                </button>
-
-                <button
-                    onClick={
-                        handleJoinRoom
-                    }
-                    disabled={
-                        !roomId.trim()
-                    }
-                    style={{
-                        padding:
-                            "10px 16px",
-
-                        background:
-                            "#059669",
-
-                        color:
-                            "white",
-
-                        border:
-                            "none",
-
-                        borderRadius:
-                            "8px",
-
-                        cursor:
-                            roomId.trim()
-                                ? "pointer"
-                                : "not-allowed",
-
-                        opacity:
-                            roomId.trim()
-                                ? 1
-                                : 0.5,
-                    }}
-                >
-                    Join Room
-                </button>
-
-                <button
-                    onClick={
-                        () => {
-
-                            const name =
-                                prompt(
-                                    "Enter experiment name:"
-                                );
-
-                            if (
-                                !name
-                            ) {
-                                return;
-                            }
-
-                            setExperimentName(
-                                name
-                            );
-
-                            requestSave();
-                        }
-                    }
-                    style={{
-                        padding:
-                            "10px 16px",
-
-                        background:
-                            "#7C3AED",
-
-                        color:
-                            "white",
-
-                        border:
-                            "none",
-
-                        borderRadius:
-                            "8px",
-
-                        cursor:
-                            "pointer",
-                    }}
-                >
-                    Save Experiment
-                </button>
-
-                <label
-                    style={{
-                        padding:
-                            "10px 16px",
-
-                        background:
-                            "#EA580C",
-
-                        color:
-                            "white",
-
-                        borderRadius:
-                            "8px",
-
-                        cursor:
-                            "pointer",
-                    }}
-                >
-                    Load Experiment
-
-                    <input
-                        type="file"
-                        accept=".json"
-                        onChange={
-                            handleLoadExperiment
-                        }
-                        style={{
-                            display:
-                                "none",
-                        }}
-                    />
-                </label>
-
+                Virtual Physics Lab
             </div>
 
-            {message && (
+            <input
+                type="text"
+                placeholder="Enter Room ID"
+                value={roomId}
+                onChange={
+                    (e) =>
+                        setRoomId(
+                            e.target
+                                .value
+                        )
+                }
+                style={{
+                    padding:
+                        "10px 14px",
+
+                    borderRadius:
+                        "8px",
+
+                    border:
+                        "1px solid #4B5563",
+
+                    background:
+                        "#111827",
+
+                    color:
+                        "white",
+
+                    outline:
+                        "none",
+
+                    minWidth:
+                        "220px",
+                }}
+            />
+
+            <button
+                onClick={
+                    handleCreateRoom
+                }
+                disabled={
+                    !roomId.trim()
+                }
+                style={{
+                    padding:
+                        "10px 16px",
+
+                    background:
+                        "#2563EB",
+
+                    color:
+                        "white",
+
+                    border:
+                        "none",
+
+                    borderRadius:
+                        "8px",
+
+                    cursor:
+                        roomId.trim()
+                            ? "pointer"
+                            : "not-allowed",
+
+                    opacity:
+                        roomId.trim()
+                            ? 1
+                            : 0.5,
+                }}
+            >
+                Create Room
+            </button>
+
+            <button
+                onClick={
+                    handleJoinRoom
+                }
+                disabled={
+                    !roomId.trim()
+                }
+                style={{
+                    padding:
+                        "10px 16px",
+
+                    background:
+                        "#059669",
+
+                    color:
+                        "white",
+
+                    border:
+                        "none",
+
+                    borderRadius:
+                        "8px",
+
+                    cursor:
+                        roomId.trim()
+                            ? "pointer"
+                            : "not-allowed",
+
+                    opacity:
+                        roomId.trim()
+                            ? 1
+                            : 0.5,
+                }}
+            >
+                Join Room
+            </button>
+
+            <button
+                onClick={
+                    () => {
+
+                        const name =
+                            prompt(
+                                "Enter experiment name:"
+                            );
+
+                        if (
+                            !name
+                        ) {
+                            return;
+                        }
+
+                        setExperimentName(
+                            name
+                        );
+
+                        requestSave();
+                    }
+                }
+                style={{
+                    padding:
+                        "10px 16px",
+
+                    background:
+                        "#7C3AED",
+
+                    color:
+                        "white",
+
+                    border:
+                        "none",
+
+                    borderRadius:
+                        "8px",
+
+                    cursor:
+                        "pointer",
+                }}
+            >
+                Save Experiment
+            </button>
+
+            <button
+                onClick={
+                    requestExperiments
+                }
+                style={{
+                    padding:
+                        "10px 16px",
+
+                    background:
+                        "#0891B2",
+
+                    color:
+                        "white",
+
+                    border:
+                        "none",
+
+                    borderRadius:
+                        "8px",
+
+                    cursor:
+                        "pointer",
+                }}
+            >
+                Gallery
+            </button>
+
+            <label
+                style={{
+                    padding:
+                        "10px 16px",
+
+                    background:
+                        "#EA580C",
+
+                    color:
+                        "white",
+
+                    borderRadius:
+                        "8px",
+
+                    cursor:
+                        "pointer",
+                }}
+            >
+                Load Experiment
+
+                <input
+                    type="file"
+                    accept=".json"
+                    onChange={
+                        handleLoadExperiment
+                    }
+                    style={{
+                        display:
+                            "none",
+                    }}
+                />
+            </label>
+
+            {
+            experiments.length >
+                0 && (
 
                 <div
                     style={{
                         marginTop:
+                            "15px",
+
+                        padding:
                             "10px",
 
-                        color:
-                            "#10B981",
+                        background:
+                            "#111827",
 
-                        fontWeight:
-                            "bold",
+                        borderRadius:
+                            "8px",
                     }}
                 >
-                    {message}
+
+                    <h3
+                        style={{
+                            color:
+                                "white",
+                        }}
+                    >
+                        Saved Experiments
+                    </h3>
+
+                    {
+                        experiments.map(
+                            (
+                                experiment
+                            ) => (
+
+                                <div
+                                  key={experiment._id}
+                                  style={{
+                                      display: "flex",
+                                      justifyContent:
+                                          "space-between",
+                                      alignItems:
+                                          "center",
+                                      padding: "8px 0",
+                                  }}
+                              >
+                                  <span
+                                      style={{
+                                          color: "white",
+                                      }}
+                                  >
+                                      {experiment.name}
+                                  </span>
+
+                                  <button
+                                      onClick={() => {
+
+                                          loadFromDatabase(
+                                              experiment._id
+                                          );
+
+                                          showMessage(
+                                              `${experiment.name} loaded`
+                                          );
+
+                                      }}
+                                      style={{
+                                          padding:
+                                              "6px 12px",
+                                          background:
+                                              "#2563EB",
+                                          color: "white",
+                                          border: "none",
+                                          borderRadius:
+                                              "6px",
+                                          cursor:
+                                              "pointer",
+                                      }}
+                                  >
+                                      Load
+                                  </button>
+                              </div>
+
+                            )
+                        )
+                    }
+
                 </div>
 
-            )}
+            )
+        }
 
         </div>
-    );
+
+        {message && (
+
+            <div
+                style={{
+                    marginTop:
+                        "10px",
+
+                    color:
+                        "#10B981",
+
+                    fontWeight:
+                        "bold",
+                }}
+            >
+                {message}
+            </div>
+
+        )}
+
+    </div>
+);
 }
 
 export default RoomControls;

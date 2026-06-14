@@ -57,3 +57,50 @@ export const registerDatabaseSaveFailure =
         );
 
     };
+
+export const requestExperiments =
+    () => {
+
+        socket.emit(
+            "get-experiments"
+        );
+
+    };
+
+export const registerExperimentsHandler =
+    (callback) => {
+
+        socket.off(
+            "experiments-list"
+        );
+
+        socket.on(
+            "experiments-list",
+            callback
+        );
+
+    };
+
+    export const loadFromDatabase =
+    (id) => {
+
+        socket.emit(
+            "load-from-database",
+            id
+        );
+
+    };
+
+    export const registerDatabaseLoadFailure =
+    (callback) => {
+
+        socket.off(
+            "database-load-failure"
+        );
+
+        socket.on(
+            "database-load-failure",
+            callback
+        );
+
+    };

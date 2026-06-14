@@ -55,12 +55,6 @@ Replace `your_mongodb_atlas_connection_string` with the MongoDB Atlas connection
 Inside the `backend` folder:
 
 ```bash
-npm start
-```
-
-or
-
-```bash
 npm run dev
 ```
 
@@ -83,7 +77,7 @@ npm run dev
 The frontend will run on:
 
 ```
-http://localhost:3000
+http://localhost:5173
 ```
 
 ---
