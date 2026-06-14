@@ -4,6 +4,15 @@ import {
   useState,
 } from "react";
 
+import { registerDragReceiver}
+from "../../physics/synchronization/dragReceiver";
+
+import { registerDragSynchronization }
+from "../../physics/synchronization/dragSynchronization";
+
+import { registerSnapshotSynchronization }
+from "../../physics/synchronization/snapshotSynchronization";
+
 import { registerConstraintSynchronization }
 from "../../physics/synchronization/constraintSynchronization";
 
@@ -87,9 +96,15 @@ const PhysicsScene = () => {
     engineRef.current = engine;
 
     // Initialize world
-    initializeWorld(
+    const {
+      mouseConstraint,
+    } = initializeWorld(
       engine,
       render
+    );
+
+    registerDragSynchronization(
+        mouseConstraint
     );
 
     // Run engine
@@ -144,7 +159,13 @@ const PhysicsScene = () => {
       engine
     );
 
-    
+    registerSnapshotSynchronization(
+      engine
+    );
+
+    registerDragReceiver(
+      engine
+    );
 
     // Rendering systems
     Events.on(
