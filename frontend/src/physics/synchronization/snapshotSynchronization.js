@@ -23,15 +23,50 @@ from "../utils/networkId";
 const { Composite } = Matter;
 
 export function registerSnapshotSynchronization(
-  engine
+  engine,
+  mouseConstraint
 ) {
   socket.on(
     "room-snapshot",
     (snapshot) => {
-      console.log(
-        "Received snapshot:",
-        snapshot
-      );
+
+      // Remove existing objects
+      Composite.allBodies(
+        engine.world
+      ).forEach((body) => {
+
+        // Preserve walls
+        if (
+          body.isStatic &&
+          !getNetworkId(body)
+        ) {
+          return;
+        }
+
+        Composite.remove(
+          engine.world,
+          body
+        );
+      });
+
+      // Remove existing constraints
+      Composite.allConstraints(
+        engine.world
+      ).forEach((constraint) => {
+
+        // Preserve mouse constraint
+        if (
+          constraint ===
+          mouseConstraint.constraint
+        ) {
+          return;
+        }
+
+        Composite.remove(
+          engine.world,
+          constraint
+        );
+      });
 
       // Recreate objects
       snapshot.objects.forEach(
@@ -82,6 +117,7 @@ export function registerSnapshotSynchronization(
       // Recreate constraints
       snapshot.constraints.forEach(
         (constraint) => {
+
           const bodies =
             Composite.allBodies(
               engine.world

@@ -12,6 +12,10 @@ import {
     registerSaveHandler,
 } from "../../services/saveSocket";
 
+import {
+  loadExperiment,
+} from "../../services/loadSocket";
+
 
 
 function RoomControls() {
@@ -97,6 +101,48 @@ function RoomControls() {
         );
     }, [roomId]);
 
+
+    //  for load 
+
+    const handleLoadExperiment =
+        (event) => {
+            const file =
+            event.target.files?.[0];
+
+            if (!file) {
+            return;
+            }
+
+            const reader =
+            new FileReader();
+
+            reader.onload = (
+            e
+            ) => {
+            try {
+                const data =
+                JSON.parse(
+                    e.target.result
+                );
+
+                loadExperiment(
+                data
+                );
+
+                showMessage(
+                "Experiment loaded"
+                );
+            } catch {
+                showMessage(
+                "Invalid experiment file"
+                );
+            }
+            };
+
+            reader.readAsText(
+            file
+            );
+        };
 
   return (
     <div
@@ -225,6 +271,28 @@ function RoomControls() {
             Save Experiment
         </button>
       </div>
+      <label
+        style={{
+            padding: "10px 16px",
+            background: "#EA580C",
+            color: "white",
+            borderRadius: "8px",
+            cursor: "pointer",
+        }}
+        >
+        Load Experiment
+
+        <input
+            type="file"
+            accept=".json"
+            onChange={
+            handleLoadExperiment
+            }
+            style={{
+            display: "none",
+            }}
+        />
+        </label>
 
       {message && (
         <div

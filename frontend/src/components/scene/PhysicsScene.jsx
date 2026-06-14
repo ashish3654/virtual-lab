@@ -163,7 +163,8 @@ const PhysicsScene = () => {
     );
 
     registerSnapshotSynchronization(
-      engine
+        engine,
+        mouseConstraint
     );
 
     registerDragReceiver(

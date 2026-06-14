@@ -5,6 +5,9 @@ const registerConstraintHandlers =require( "./constraintHandlers");
 const registerDragHandlers = require("./dragHandlers");
 const registerForceHandlers = require("./forceHandlers");
 const registerSaveHandlers = require("./saveHandlers");
+const registerLoadHandlers = require("./loadHandlers");
+
+
 
 function initializeSocket(io) {
     io.on("connection", (socket) => {
@@ -32,6 +35,10 @@ function initializeSocket(io) {
             socket
         );
         registerSaveHandlers(
+            io,
+            socket
+        );
+        registerLoadHandlers(
             io,
             socket
         );
