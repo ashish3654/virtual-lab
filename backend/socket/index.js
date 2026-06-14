@@ -7,6 +7,11 @@ const registerForceHandlers = require("./forceHandlers");
 const registerSaveHandlers = require("./saveHandlers");
 const registerLoadHandlers = require("./loadHandlers");
 
+const registerDatabaseHandlers =
+    require(
+        "./databaseHandlers"
+    );
+
 
 
 function initializeSocket(io) {
@@ -39,6 +44,10 @@ function initializeSocket(io) {
             socket
         );
         registerLoadHandlers(
+            io,
+            socket
+        );
+        registerDatabaseHandlers(
             io,
             socket
         );
