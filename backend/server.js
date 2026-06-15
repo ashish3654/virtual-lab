@@ -15,6 +15,10 @@ const { Server } = require("socket.io");
 
 const initializeSocket = require("./socket");
 
+const authRoutes =
+    require(
+        "./routes/authRoutes"
+    );
 
 connectDB();
 
@@ -32,6 +36,10 @@ const io = new Server(server, {
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(
+    "/api/auth",
+    authRoutes 
+);
 
 // Test route
 app.get("/", (req, res) => {

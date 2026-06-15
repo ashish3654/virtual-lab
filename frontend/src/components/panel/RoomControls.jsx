@@ -545,6 +545,41 @@ return (
 
             )
         }
+        <button
+            onClick={() => {
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+                window.location.reload();
+
+            }}
+
+            style={{
+                padding: "10px 16px",
+
+                background:
+                    "#DC2626",
+
+                color:
+                    "white",
+
+                border: "none",
+
+                borderRadius:
+                    "8px",
+
+                cursor:
+                    "pointer",
+            }}
+        >
+            Logout
+        </button>
 
         </div>
 
