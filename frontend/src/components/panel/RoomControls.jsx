@@ -41,6 +41,11 @@ function RoomControls() {
     ] = useState("");
 
     const [
+        showGallery,
+        setShowGallery,
+    ] = useState(false);
+
+    const [
         experiments,
         setExperiments,
     ] = useState([]);
@@ -193,6 +198,9 @@ function RoomControls() {
                 file
             );
         };
+
+  ////////////////////////////////////////////////////////////////////////////////////////return  
+
 
 return (
     <div
@@ -395,9 +403,15 @@ return (
             </button>
 
             <button
-                onClick={
-                    requestExperiments
-                }
+                onClick={() => {
+
+                    requestExperiments();
+
+                    setShowGallery(
+                        true
+                    );
+
+                }}
                 style={{
                     padding:
                         "10px 16px",
@@ -455,8 +469,7 @@ return (
             </label>
 
             {
-            experiments.length >
-                0 && (
+              showGallery &&  (
 
                 <div
                     style={{
@@ -482,6 +495,27 @@ return (
                     >
                         Saved Experiments
                     </h3>
+                        <button  // close button
+                            onClick={() =>
+                                setShowGallery(
+                                    false
+                                )
+                            }
+                            style={{
+                                background:
+                                    "none",
+                                border:
+                                    "none",
+                                color:
+                                    "white",
+                                fontSize:
+                                    "20px",
+                                cursor:
+                                    "pointer",
+                            }}
+                        >
+                            ✕
+                        </button>
 
                     {
                         experiments.map(
@@ -513,6 +547,9 @@ return (
 
                                           loadFromDatabase(
                                               experiment._id
+                                          );
+                                          setShowGallery(
+                                            false
                                           );
 
                                           showMessage(
@@ -554,6 +591,9 @@ return (
 
                 localStorage.removeItem(
                     "user"
+                );
+                localStorage.removeItem(
+                    "roomId"
                 );
 
                 window.location.reload();

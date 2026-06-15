@@ -24,10 +24,20 @@ export const registerSaveHandler =
 
 export const saveToDatabase =
     (data) => {
+
+        const token =
+            localStorage.getItem(
+                "token"
+            );
+
         socket.emit(
             "save-to-database",
-            data
+            {
+                ...data,
+                token,
+            }
         );
+
     };
 
 export const registerDatabaseSaveSuccess =
@@ -61,8 +71,14 @@ export const registerDatabaseSaveFailure =
 export const requestExperiments =
     () => {
 
+        const token =
+            localStorage.getItem(
+                "token"
+            );
+
         socket.emit(
-            "get-experiments"
+            "get-experiments",
+            token
         );
 
     };
@@ -81,12 +97,20 @@ export const registerExperimentsHandler =
 
     };
 
-    export const loadFromDatabase =
+export const loadFromDatabase =
     (id) => {
+
+        const token =
+            localStorage.getItem(
+                "token"
+            );
 
         socket.emit(
             "load-from-database",
-            id
+            {
+                id,
+                token,
+            }
         );
 
     };

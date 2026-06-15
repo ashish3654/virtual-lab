@@ -3,14 +3,27 @@ const Experiment =
         "../models/Experiment"
     );
 
+const jwt = require(
+    "jsonwebtoken"
+);
+
 function registerDatabaseHandlers(
     io,
     socket
 ) {
-    socket.on(
+   socket.on(
         "save-to-database",
         async (data) => {
+
             try {
+
+                const decoded =
+                    jwt.verify(
+                        data.token,
+                        process.env
+                            .JWT_SECRET
+                    );
+
                 const experiment =
                     new Experiment({
                         name:
@@ -19,6 +32,9 @@ function registerDatabaseHandlers(
                         description:
                             data.description ||
                             "",
+
+                        owner:
+                            decoded.userId,
 
                         objects:
                             data.objects,
@@ -32,9 +48,11 @@ function registerDatabaseHandlers(
                 socket.emit(
                     "database-save-success"
                 );
+
             } catch (
                 error
             ) {
+
                 console.error(
                     "Database save failed:",
                     error
@@ -43,83 +61,108 @@ function registerDatabaseHandlers(
                 socket.emit(
                     "database-save-failure"
                 );
-            }
-        }
-    );
-    socket.on(
-        "get-experiments",
-        async () => {
-
-            try {
-
-                const experiments =
-                    await Experiment.find(
-                        {},
-                        {
-                            name: 1,
-                            description: 1,
-                        }
-                    );
-
-                socket.emit(
-                    "experiments-list",
-                    experiments
-                );
-
-            } catch (
-                error
-            ) {
-
-                console.error(
-                    "Fetching experiments failed:",
-                    error
-                );
 
             }
 
         }
     );
     socket.on(
-        "load-from-database",
-        async (id) => {
+    "get-experiments",
+    async (token) => {
 
-            try {
+        try {
 
-                const experiment =
-                    await Experiment.findById(
-                        id
-                    );
+            const decoded =
+                jwt.verify(
+                    token,
+                    process.env
+                        .JWT_SECRET
+                );
 
-                if (
-                    !experiment
-                ) {
-                    return;
-                }
-
-                socket.emit(
-                    "room-snapshot",
+            const experiments =
+                await Experiment.find(
                     {
-                        objects:
-                            experiment.objects,
-
-                        constraints:
-                            experiment.constraints,
+                        owner:
+                            decoded.userId,
+                    },
+                    {
+                        name: 1,
+                        description: 1,
                     }
                 );
 
-            } catch (
+            socket.emit(
+                "experiments-list",
+                experiments
+            );
+
+        } catch (
+            error
+        ) {
+
+            console.error(
+                "Fetching experiments failed:",
                 error
-            ) {
-
-                console.error(
-                    "Loading experiment failed:",
-                    error
-                );
-
-            }
+            );
 
         }
-    );
+
+    }
+);
+   socket.on(
+    "load-from-database",
+    async (data) => {
+
+        try {
+
+            const decoded =
+                jwt.verify(
+                    data.token,
+                    process.env
+                        .JWT_SECRET
+                );
+
+            const experiment =
+                await Experiment.findOne(
+                    {
+                        _id:
+                            data.id,
+
+                        owner:
+                            decoded.userId,
+                    }
+                );
+
+            if (
+                !experiment
+            ) {
+                return;
+            }
+
+            socket.emit(
+                "room-snapshot",
+                {
+                    objects:
+                        experiment.objects,
+
+                    constraints:
+                        experiment.constraints,
+                }
+            );
+
+        } catch (
+            error
+        ) {
+
+            console.error(
+                "Loading experiment failed:",
+                error
+            );
+
+        }
+
+    }
+);
 }
 
 module.exports =

@@ -8,16 +8,31 @@ import Login from "./pages/Login";
 
 import Register from "./pages/Register";
 
+import RoomSelection from "./pages/RoomSelection";
+
 function App() {
 
-    const [showRegister,
-        setShowRegister] =
-        useState(false);
+    const [
+        showRegister,
+        setShowRegister,
+    ] = useState(false);
 
     const user =
         localStorage.getItem(
             "user"
         );
+
+    const roomId =
+        localStorage.getItem(
+            "roomId"
+        );
+
+    const [
+        hasRoom,
+        setHasRoom,
+    ] = useState(
+        !!roomId
+    );
 
     useEffect(() => {
 
@@ -31,6 +46,7 @@ function App() {
 
     }, []);
 
+    // User not logged in
     if (!user) {
 
         return (
@@ -39,59 +55,23 @@ function App() {
 
                 {showRegister ? (
 
-                    <>
-
-                        <Register />
-
-                        <p
-                            style={{
-                                textAlign:
-                                    "center",
-                            }}
-                        >
-                            Already have an account?
-
-                            <button
-                                onClick={() =>
-                                    setShowRegister(
-                                        false
-                                    )
-                                }
-                            >
-                                Login
-                            </button>
-
-                        </p>
-
-                    </>
+                    <Register
+                        onSwitchToLogin={() =>
+                            setShowRegister(
+                                false
+                            )
+                        }
+                    />
 
                 ) : (
 
-                    <>
-
-                        <Login />
-
-                        <p
-                            style={{
-                                textAlign:
-                                    "center",
-                            }}
-                        >
-                            Don't have an account?
-
-                            <button
-                                onClick={() =>
-                                    setShowRegister(
-                                        true
-                                    )
-                                }
-                            >
-                                Register
-                            </button>
-
-                        </p>
-
-                    </>
+                    <Login
+                        onSwitchToRegister={() =>
+                            setShowRegister(
+                                true
+                            )
+                        }
+                    />
 
                 )}
 
@@ -101,11 +81,30 @@ function App() {
 
     }
 
+    // User logged in but hasn't joined a room
+    if (!hasRoom) {
+
+        return (
+
+            <RoomSelection
+                onRoomSelected={() =>
+                    setHasRoom(
+                        true
+                    )
+                }
+            />
+
+        );
+
+    }
+
+    // User logged in and has a room
     return (
 
         <PhysicsScene />
 
     );
+
 }
 
 export default App;

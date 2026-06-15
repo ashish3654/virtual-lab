@@ -15,6 +15,15 @@ const experimentSchema =
                 default: "",
             },
 
+            owner: {
+                type:
+                    mongoose.Schema.Types.ObjectId,
+
+                ref: "User",
+
+                required: true,
+            },
+
             objects: {
                 type: Array,
                 default: [],
