@@ -1,240 +1,341 @@
 # Virtual Physics Lab
 
-A collaborative virtual physics laboratory built using **React**, **Matter.js**, **Socket.IO**, and **MongoDB Atlas**. Users can create physics experiments, collaborate in real time through rooms, and persist experiments using cloud storage.
+A collaborative web-based platform for creating, simulating, and sharing interactive physics experiments in real time.
 
-## Installation
+---
 
-### 1. Clone the repository
+# Getting Started
+
+## Prerequisites
+
+Make sure the following are installed:
+
+* Node.js (v18 or later recommended)
+* npm
+* MongoDB Atlas account
+
+---
+
+# Installation and Setup
+
+## 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
+
 cd virtual-physics-lab
 ```
 
 ---
 
-### 2. Install frontend dependencies
+## 2. Backend Setup
 
-```bash
-cd frontend
-npm install
-```
-
----
-
-### 3. Install backend dependencies
-
-Open another terminal:
+Open a terminal and navigate to the backend directory:
 
 ```bash
 cd backend
+```
+
+Install dependencies:
+
+```bash
 npm install
 ```
 
----
-
-## Environment Variables
-
-Create a `.env` file inside the `backend` folder.
-
-Example:
+Create a `.env` file inside the backend directory:
 
 ```env
 PORT=5000
-MONGODB_URI=your_mongodb_atlas_connection_string
+
+MONGO_URI=your_mongodb_atlas_connection_string
+
+JWT_SECRET=your_secret_key
 ```
 
-Replace `your_mongodb_atlas_connection_string` with the MongoDB Atlas connection string.
-
----
-
-## Running the Application
-
-### Start the backend server
-
-Inside the `backend` folder:
+Start the backend server:
 
 ```bash
 npm run dev
 ```
 
-The backend will run on:
-
-```
-http://localhost:5000
-```
+The backend should start successfully and connect to MongoDB Atlas.
 
 ---
 
-### Start the frontend
+## 3. Frontend Setup
 
-Inside the `frontend` folder:
+Open a second terminal.
+
+Navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-The frontend will run on:
+The application will be available at:
 
-```
+```text
 http://localhost:5173
 ```
 
 ---
 
-## Features
+# Application Workflow
 
-### Physics Simulation
+1. Register a new account.
+2. Login using your credentials.
+3. Create a room or join an existing room.
+4. Build and interact with physics experiments collaboratively.
+5. Save experiments to the cloud.
+6. Open the experiment gallery to load previously saved experiments.
 
-* Real-time 2D physics simulation powered by Matter.js
-* Create and manipulate different objects such as:
+---
 
-  * Boxes
-  * Circles
-  * Anchors
-* Interactive object dragging and repositioning
-* Object selection and deselection system
-* Apply custom forces to objects through the properties panel
-* Support for multiple constraints:
+# Features
 
-  * Springs
-  * Rigid rods
-  * Strings
-* Constraint creation between selected objects
-* Physics world boundaries and collision handling
+## Interactive Physics Simulation
 
-### Collaboration Features
+* Real-time physics simulation.
+* Collision detection and response.
+* Drag-and-drop object interaction.
+* Adjustable simulation environment.
 
-* Room-based collaborative experiments
-* Create and join shared experiment rooms
-* Real-time synchronization of:
+---
 
-  * Object creation
-  * Object deletion
-  * Object movement and dragging
-  * Constraint creation
-  * Force application
-* Late-join synchronization allowing new participants to receive the current experiment state automatically
-* Multi-user experiment interaction through Socket.IO
+## Physics Objects
 
-### Experiment Persistence
+Supported object types include:
 
-* Save experiments to MongoDB Atlas for persistent cloud storage
-* Store experiment metadata including experiment names
-* Load experiments from exported JSON files
-* Experiment snapshots containing:
+* Boxes
+* Circles
+* Anchors
 
-  * Objects and their properties
-  * Constraint relationships
-* Shared experiment state restoration across collaborative sessions
+Objects can be freely placed and manipulated within the laboratory.
 
-### Visualization and Analysis
+---
 
-* Real-time graph visualization of simulation data
-* Dynamic plotting of physical quantities during experiments
-* Interactive chart updates based on simulation state
-* Support for experimental observation and analysis through graphical outputs
+## Constraint-Based Experiment Design
 
-### User Interface
+Create complex experiments using:
 
-* Toolbar for selecting simulation tools
-* Properties panel for modifying object parameters
-* Room management controls
-* Save and load experiment controls
-* Status and notification messages for user actions
-* Responsive and intuitive interface design
+### Springs
 
-### Backend Features
+* Simulate elastic systems.
+* Useful for oscillation experiments.
 
-* Socket.IO-based real-time communication
-* Room-based event broadcasting
-* Modular event handler architecture
-* In-memory room state management for active sessions
-* MongoDB Atlas integration using Mongoose
-* Persistent experiment storage and retrieval support
+### Rods
 
+* Maintain fixed distances between bodies.
+* Suitable for pendulums and linkages.
 
-## Tech Stack
+### Strings
 
-### Frontend
+* Restrict maximum separation distance.
+* Useful for rope-like systems.
+
+### Anchors
+
+* Provide static attachment points.
+
+---
+
+## Object Property Configuration
+
+Users can configure physical properties such as:
+
+* Mass
+* Density
+* Friction
+* Restitution (bounciness)
+* Static/Dynamic state
+
+This enables realistic modelling of different materials.
+
+---
+
+## Force Application
+
+Users can apply forces to objects to observe resulting motion.
+
+Supported interactions include:
+
+* Directional force application.
+* Instantaneous impulses.
+* Experimentation with Newtonian mechanics.
+
+---
+
+## Velocity Visualization
+
+The platform supports visualization of:
+
+* Velocity vectors.
+* Direction of motion.
+* Relative magnitude of object velocities.
+
+---
+
+## Graph Visualization
+
+Generate and observe graphical representations of simulation data.
+
+Examples include:
+
+* Position vs Time
+* Velocity vs Time
+* Acceleration vs Time
+
+These visualizations help users connect theoretical concepts with experimental observations.
+
+---
+
+## Real-Time Collaboration
+
+* Create shared rooms.
+* Join existing rooms.
+* Collaborate simultaneously with multiple users.
+* Synchronize changes instantly across participants.
+
+---
+
+## User Authentication
+
+* User registration.
+* Secure login.
+* Persistent sessions.
+* Password encryption.
+
+---
+
+## Experiment Persistence
+
+* Save experiments to the cloud.
+* Reload experiments at a later time.
+* Continue work from previous sessions.
+
+---
+
+## Personal Experiment Gallery
+
+* View previously saved experiments.
+* Load experiments directly into the laboratory.
+* Gallery is filtered to show only experiments belonging to the logged-in user.
+
+---
+
+## Room-Based Access Control
+
+Users are required to either:
+
+* Create a room, or
+* Join an existing room,
+
+before accessing the laboratory environment.
+
+This ensures collaboration features function correctly.
+
+---
+
+# Technology Stack
+
+## Frontend
 
 * React
+* Vite
 * Matter.js
 * Socket.IO Client
+* Axios
 
-### Backend
+---
+
+## Backend
 
 * Node.js
 * Express.js
 * Socket.IO
 * Mongoose
 
-### Database
+---
+
+## Database
 
 * MongoDB Atlas
 
 ---
 
-## Prerequisites
+## Authentication
 
-Ensure the following are installed:
-
-* Node.js (v18 or later recommended)
-* npm
-* Internet connection (required for MongoDB Atlas)
+* JSON Web Tokens (JWT)
+* bcryptjs
 
 ---
 
+# Project Structure
 
-
-## Using the Application
-
-### Creating or Joining a Room
-
-1. Enter a Room ID.
-2. Click **Create Room** .
-3. **Join Room** with same Room ID to work on same experiment.
-3. Users with the same Room ID collaborate in the same experiment.
-
----
-
-### Saving Experiments
-
-1. Click **Save Experiment**.
-2. Enter an experiment name.
-3. The experiment state is stored in MongoDB Atlas.
-
----
-
-### Loading Experiments
-
-1. Click **Load Experiment**.
-2. Select a previously exported JSON experiment file.
-3. The experiment is reconstructed in the simulation.
-
----
-
-## Project Structure
-
-```
+```text
 virtual-physics-lab/
-│
+
 ├── frontend/
 │   ├── src/
 │   └── package.json
 │
 ├── backend/
-│   ├── socket/
-│   ├── models/
 │   ├── database/
-│   ├── .env
-│   └── package.json
+│   ├── models/
+│   ├── routes/
+│   ├── socket/
+│   └── server.js
 │
-└── README.md
+├── README.md
+│
+└── TECHNICAL_DOCUMENTATION.md
 ```
 
 ---
 
-## Authors
+# Future Enhancements
 
-Developed as part of an academic project on collaborative virtual laboratories.
+Potential improvements include:
+
+* Dedicated gallery page.
+* Public experiment sharing.
+* Experiment deletion.
+* Undo/redo functionality.
+* Protected routing using React Router.
+* Mobile responsiveness.
+* Additional physics components and experiment templates.
+* Export of graphs and experiment reports.
+
+---
+
+# Technical Documentation
+
+Detailed implementation information is available in:
+
+```text
+TECHNICAL_DOCUMENTATION.md
+```
+
+---
+
+# License
+
+This project was developed for educational purposes.
+
+---
+
+# Authors
+
+Virtual Physics Lab Development Team
