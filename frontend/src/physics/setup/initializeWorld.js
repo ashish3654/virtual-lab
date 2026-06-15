@@ -12,7 +12,11 @@ export const initializeWorld = (
   engine,
   render
 ) => {
-  const walls = createWalls();
+  const walls =
+    createWalls(
+      render.options.width,
+      render.options.height
+    );
 
   const mouseConstraint =
     setupMouse(engine, render);

@@ -2,60 +2,83 @@ import Matter from "matter-js";
 
 const { Bodies } = Matter;
 
-export const createWalls = () => {
+export const createWalls = (
+  width,
+  height
+) => {
+
   const wallThickness = 40;
 
-  const floor = Bodies.rectangle(
-    window.innerWidth / 2,
-    window.innerHeight - wallThickness / 2,
-    window.innerWidth,
-    wallThickness,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#374151",
-      },
-    }
-  );
+  const floor =
+    Bodies.rectangle(
+      width / 2,
+      height -
+        wallThickness / 2,
+      width,
+      wallThickness,
+      {
+        isStatic: true,
 
-  const ceiling = Bodies.rectangle(
-    window.innerWidth / 2,
-    wallThickness / 2,
-    window.innerWidth,
-    wallThickness,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#374151",
-      },
-    }
-  );
+        render: {
+          fillStyle:
+            "#374151",
+        },
+      }
+    );
 
-  const leftWall = Bodies.rectangle(
-    wallThickness / 2,
-    window.innerHeight / 2,
-    wallThickness,
-    window.innerHeight,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#374151",
-      },
-    }
-  );
+  const ceiling =
+    Bodies.rectangle(
+      width / 2,
+      wallThickness / 2,
+      width,
+      wallThickness,
+      {
+        isStatic: true,
 
-  const rightWall = Bodies.rectangle(
-    window.innerWidth - wallThickness / 2,
-    window.innerHeight / 2,
-    wallThickness,
-    window.innerHeight,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#374151",
-      },
-    }
-  );
+        render: {
+          fillStyle:
+            "#374151",
+        },
+      }
+    );
 
-  return [floor, leftWall, rightWall, ceiling];
+  const leftWall =
+    Bodies.rectangle(
+      wallThickness / 2,
+      height / 2,
+      wallThickness,
+      height,
+      {
+        isStatic: true,
+
+        render: {
+          fillStyle:
+            "#374151",
+        },
+      }
+    );
+
+  const rightWall =
+    Bodies.rectangle(
+      width -
+        wallThickness / 2,
+      height / 2,
+      wallThickness,
+      height,
+      {
+        isStatic: true,
+
+        render: {
+          fillStyle:
+            "#374151",
+        },
+      }
+    );
+
+  return [
+    floor,
+    leftWall,
+    rightWall,
+    ceiling,
+  ];
 };

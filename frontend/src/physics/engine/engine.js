@@ -1,27 +1,69 @@
 import Matter from "matter-js";
 
-const { Engine, Render, Runner } = Matter;
+const {
+  Engine,
+  Render,
+  Runner,
+} = Matter;
 
-export const createPhysicsEngine = (sceneElement) => {
-  const engine = Engine.create();
+export const createPhysicsEngine = (
+  sceneElement
+) => {
 
-  const render = Render.create({
-    element: sceneElement,
-    engine,
-    options: {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      wireframes: false,
-      background: "#111827",
-    },
-  });
+  const engine =
+    Engine.create();
 
-  const runner = Runner.create();
+  const render =
+    Render.create({
+      element:
+        sceneElement,
+
+      engine,
+
+      options: {
+        width:
+          window.innerWidth,
+
+        height:
+          window.innerHeight -40,
+
+        wireframes:
+          false,
+
+        background:
+          "#111827",
+      },
+    });
+
+  const runner =
+    Runner.create();
+
+  const handleResize =
+    () => {
+
+      render.canvas.width =
+        window.innerWidth;
+
+      render.canvas.height =
+        window.innerHeight;
+
+      render.options.width =
+        window.innerWidth;
+
+      render.options.height =
+        window.innerHeight;
+    };
+
+  window.addEventListener(
+    "resize",
+    handleResize
+  );
 
   return {
     engine,
     render,
     runner,
+    handleResize,
   };
 };
 
